@@ -6,17 +6,41 @@ const navSlide = () => {
   const nav = document.querySelector(".nav-links");
   const navLinks = document.querySelectorAll(".nav-links li a");
 
+  // Create overlay
+  const overlay = document.createElement("div");
+  overlay.classList.add("nav-overlay");
+  document.body.appendChild(overlay);
+
+  const openMenu = () => {
+    nav.classList.add("nav-active");
+    burger.classList.add("toggle");
+    overlay.classList.add("active");
+    document.body.style.overflow = "hidden";
+  };
+
+  const closeMenu = () => {
+    nav.classList.remove("nav-active");
+    burger.classList.remove("toggle");
+    overlay.classList.remove("active");
+    document.body.style.overflow = "";
+  };
+
   burger.addEventListener("click", () => {
-    nav.classList.toggle("nav-active");
-    burger.classList.toggle("toggle");
+    if (nav.classList.contains("nav-active")) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
   });
+
+  // Close menu when clicking the overlay
+  overlay.addEventListener("click", closeMenu);
 
   // Close menu when clicking a link (mobile)
   navLinks.forEach((link) => {
     link.addEventListener("click", () => {
       if (nav.classList.contains("nav-active")) {
-        nav.classList.remove("nav-active");
-        burger.classList.remove("toggle");
+        closeMenu();
       }
     });
   });
@@ -101,9 +125,9 @@ const typingEffect = () => {
   let wordIndex = 0;
   let charIndex = 0;
   let isDeleting = false;
-  const typeSpeed = 70;
-  const deleteSpeed = 40;
-  const pauseTime = 1000;
+  const typeSpeed = 80;
+  const deleteSpeed = 50;
+  const pauseTime = 1300;
 
   const type = () => {
     const currentWord = words[wordIndex];
