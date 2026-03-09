@@ -389,6 +389,18 @@ const langToggle = () => {
 };
 
 // ============================================
+// EMAIL VALIDATION — Vérifier les adresses e-mail
+// ============================================
+const isValidEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+// Exemple d'utilisation
+console.log(isValidEmail("test@example.com")); // true
+console.log(isValidEmail("invalid-email")); // false
+
+// ============================================
 // INIT — Launch everything
 // ============================================
 document.addEventListener("DOMContentLoaded", () => {
