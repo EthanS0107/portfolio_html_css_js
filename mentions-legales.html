@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mentions Légales — Ethan Serville</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ── Layout ── */
+      .legal-wrapper {
+        min-height: 100vh;
+        background: var(--Off-White, #f8f9fa);
+        padding: 0 0 80px;
+      }
+
+      /* ── Hero banner ── */
+      .legal-hero {
+        background: var(--Ardoise-Profonde, #2c3e50);
+        color: #fff;
+        text-align: center;
+        padding: 100px 1.5rem 60px;
+        position: relative;
+        overflow: hidden;
+      }
+      .legal-hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at 70% 50%,
+          rgba(193, 102, 107, 0.18) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .legal-hero h1 {
+        font-family: "Montserrat", sans-serif;
+        font-size: clamp(1.8rem, 5vw, 3rem);
+        font-weight: 800;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #fff;
+        margin-bottom: 0.5rem;
+      }
+      .legal-hero h1::after {
+        content: "";
+        display: block;
+        width: 60px;
+        height: 4px;
+        background: var(--Terracotta-Brûlée, #c1666b);
+        margin: 14px auto 0;
+        border-radius: 2px;
+      }
+      .legal-hero p {
+        margin-top: 1.2rem;
+        font-size: 0.9rem;
+        opacity: 0.6;
+        letter-spacing: 1px;
+      }
+
+      /* ── Content ── */
+      .legal-content {
+        max-width: 820px;
+        margin: 0 auto;
+        padding: 60px 1.5rem 0;
+      }
+
+      /* ── Intro text ── */
+      .legal-intro {
+        font-size: 0.95rem;
+        color: var(--Ardoise-Light, #34495e);
+        background: #fff;
+        border-left: 4px solid var(--Terracotta-Brûlée, #c1666b);
+        border-radius: 0 8px 8px 0;
+        padding: 1rem 1.4rem;
+        margin-bottom: 2.5rem;
+        line-height: 1.8;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      }
+
+      /* ── Cards ── */
+      .legal-card {
+        background: #fff;
+        border-radius: 12px;
+        padding: 1.6rem 2rem;
+        margin-bottom: 1.2rem;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+        border-top: 3px solid transparent;
+        transition:
+          border-color 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+      .legal-card:hover {
+        border-top-color: var(--Terracotta-Brûlée, #c1666b);
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.11);
+      }
+      .legal-card h2 {
+        font-family: "Montserrat", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: var(--Ardoise-Profonde, #2c3e50);
+        margin-bottom: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .legal-card h2 .card-num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: var(--Terracotta-Brûlée, #c1666b);
+        color: #fff;
+        font-size: 0.75rem;
+        font-weight: 800;
+        flex-shrink: 0;
+      }
+      .legal-card p {
+        font-size: 0.93rem;
+        color: var(--Ardoise-Light, #34495e);
+        line-height: 1.85;
+      }
+      .legal-card a {
+        color: var(--Terracotta-Brûlée, #c1666b);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        font-weight: 600;
+      }
+      .legal-card a:hover {
+        color: var(--Terracotta-Dark, #a5555a);
+      }
+
+      /* ── Back link ── */
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 3rem;
+        padding: 0.65rem 1.4rem;
+        border: 2px solid var(--Ardoise-Profonde, #2c3e50);
+        border-radius: 8px;
+        font-family: "Montserrat", sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--Ardoise-Profonde, #2c3e50);
+        transition:
+          background 0.25s ease,
+          color 0.25s ease;
+      }
+      .back-link:hover {
+        background: var(--Ardoise-Profonde, #2c3e50);
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="legal-wrapper">
+      <!-- Bannière -->
+      <div class="legal-hero">
+        <h1>Mentions Légales</h1>
+        <p>Dernière mise à jour : mars 2026</p>
+      </div>
+
+      <!-- Contenu -->
+      <div class="legal-content">
+        <p class="legal-intro">
+          Conformément aux dispositions de la loi n° 2004-575 du 21 juin 2004
+          pour la confiance dans l'économie numérique, les utilisateurs du site
+          <strong>ethan-serville.vercel.app</strong> sont informés des présentes
+          mentions légales.
+        </p>
+
+        <div class="legal-card">
+          <h2><span class="card-num">1</span> Éditeur du site</h2>
+          <p>
+            <strong>Nom :</strong> Ethan Serville<br />
+            <strong>Statut :</strong> Particulier — Étudiant en Informatique
+            (BUT)<br />
+            <strong>Email :</strong>
+            <a href="mailto:ethanserville@gmail.com">ethanserville@gmail.com</a>
+          </p>
+        </div>
+
+        <div class="legal-card">
+          <h2><span class="card-num">2</span> Hébergeur</h2>
+          <p>
+            <strong>Nom :</strong> Vercel Inc.<br />
+            <strong>Adresse :</strong> 340 S Lemon Ave #4133, Walnut, CA 91789,
+            États-Unis<br />
+            <strong>Site web :</strong>
+            <a href="https://vercel.com" target="_blank" rel="noopener"
+              >vercel.com</a
+            >
+          </p>
+        </div>
+
+        <div class="legal-card">
+          <h2><span class="card-num">3</span> Propriété intellectuelle</h2>
+          <p>
+            Le contenu de ce site (textes, images, visuels, logos) est la
+            propriété d'Ethan Serville, sauf mention contraire. Toute
+            reproduction, distribution ou utilisation sans autorisation
+            préalable est interdite.
+          </p>
+        </div>
+
+        <div class="legal-card">
+          <h2><span class="card-num">4</span> Données personnelles</h2>
+          <p>
+            Ce site ne collecte pas de données personnelles à des fins
+            commerciales. Le formulaire de contact utilise le service
+            <a href="https://www.emailjs.com" target="_blank" rel="noopener"
+              >EmailJS</a
+            >
+            pour l'envoi de messages. Ces données ne sont pas conservées ni
+            revendues.
+          </p>
+        </div>
+
+        <div class="legal-card">
+          <h2><span class="card-num">5</span> Cookies</h2>
+          <p>
+            Ce site n'utilise pas de cookies de suivi ou de traçage
+            publicitaire.
+          </p>
+        </div>
+
+        <div class="legal-card">
+          <h2><span class="card-num">6</span> Liens hypertextes</h2>
+          <p>
+            Le site peut contenir des liens vers des sites tiers (GitHub,
+            LinkedIn, etc.). Ethan Serville ne peut être tenu responsable du
+            contenu de ces sites externes.
+          </p>
+        </div>
+
+        <div class="legal-card">
+          <h2><span class="card-num">7</span> Droit applicable</h2>
+          <p>
+            Les présentes mentions légales sont soumises au droit français. En
+            cas de litige, les tribunaux français seront seuls compétents.
+          </p>
+        </div>
+
+        <a href="index.html" class="back-link">&#8592; Retour à l'accueil</a>
+      </div>
+    </div>
+  </body>
+</html>
