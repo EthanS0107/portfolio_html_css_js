@@ -282,6 +282,29 @@ nav {
   padding: 5px;
 }
 
+/* Lang Toggle Button */
+.lang-toggle {
+  background: transparent;
+  border: 1.5px solid var(--Gris-Béton);
+  color: var(--Gris-Béton);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 0.85rem;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lang-toggle:hover {
+  background: var(--Terracotta-Glow);
+  border-color: var(--Terracotta-Brûlée);
+  color: var(--Terracotta-Brûlée);
+}
+
 .burger div {
   width: 25px;
   height: 3px;
@@ -1241,6 +1264,11 @@ footer p {
 
   .burger {
     display: block;
+  }
+
+  .lang-toggle {
+    font-size: 0.78rem;
+    padding: 4px 10px;
   }
 
   .hero h1 {

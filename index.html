@@ -99,13 +99,21 @@
           </a>
         </div>
         <ul class="nav-links">
-          <li><a href="#accueil">Accueil</a></li>
-          <li><a href="#a-propos">À propos</a></li>
-          <li><a href="#competences">Compétences</a></li>
-          <li><a href="#projets">Projets</a></li>
-          <li><a href="#parcours">Parcours</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#accueil" data-i18n="nav.home">Accueil</a></li>
+          <li><a href="#a-propos" data-i18n="nav.about">À propos</a></li>
+          <li><a href="#competences" data-i18n="nav.skills">Compétences</a></li>
+          <li><a href="#projets" data-i18n="nav.projects">Projets</a></li>
+          <li><a href="#parcours" data-i18n="nav.journey">Parcours</a></li>
+          <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
         </ul>
+        <button
+          class="lang-toggle"
+          id="lang-toggle"
+          aria-label="Switch language"
+        >
+          <span class="lang-fr">🇫🇷 FR</span>
+          <span class="lang-en">🇬🇧 EN</span>
+        </button>
         <div class="burger" aria-label="Menu" role="button" tabindex="0">
           <div class="line1"></div>
           <div class="line2"></div>
@@ -118,24 +126,29 @@
       <!-- ===== HERO ===== -->
       <section id="accueil" class="hero">
         <div class="hero-content reveal">
-          <p class="hero-greeting">Bonjour, je suis</p>
+          <p class="hero-greeting" data-i18n="hero.greeting">
+            Bonjour, je suis
+          </p>
           <h1>
             <span class="typing-text"></span><span class="cursor">|</span>
           </h1>
-          <h2>Étudiant en Informatique</h2>
+          <h2 data-i18n="hero.subtitle">Étudiant en Informatique</h2>
           <p class="passions">
             <i class="fas fa-code"></i> Développement Web &nbsp;&bull;&nbsp;
             <i class="fas fa-dumbbell"></i> Sport
           </p>
           <div class="hero-cta">
             <a href="#contact" class="btn-primary"
-              ><i class="fas fa-envelope"></i> Me Contacter</a
+              ><i class="fas fa-envelope"></i>
+              <span data-i18n="hero.cta.contact">Me Contacter</span></a
             >
             <a href="#projets" class="btn-secondary"
-              ><i class="fas fa-folder-open"></i> Voir mes projets</a
+              ><i class="fas fa-folder-open"></i>
+              <span data-i18n="hero.cta.projects">Voir mes projets</span></a
             >
             <a href="assets/CV_Ethan_Serville.pdf" download class="btn-download"
-              ><i class="fas fa-file-arrow-down"></i> Télécharger mon CV</a
+              ><i class="fas fa-file-arrow-down"></i>
+              <span data-i18n="hero.cta.cv">Télécharger mon CV</span></a
             >
           </div>
         </div>
@@ -151,17 +164,19 @@
       <!-- ===== À PROPOS ===== -->
       <section id="a-propos" class="about">
         <div class="container">
-          <h2 class="section-title reveal">À propos de moi</h2>
+          <h2 class="section-title reveal" data-i18n="about.title">
+            À propos de moi
+          </h2>
           <div class="about-content reveal">
             <div class="about-text">
-              <p>
+              <p data-i18n="about.p1">
                 Passionné par les possibilités que le développement nous offre,
                 je cherche toujours à apprendre de nouvelles compétences, que ce
                 soit en résolvant des problèmes ou tout simplement en trouvant
                 des solutions qui permettent de simplifier et rendre plus
                 agréable la vie du quotidien et l'expérience des utilisateurs.
               </p>
-              <p>
+              <p data-i18n="about.p2">
                 Ma discipline dans le sport (Calisthenics, Escalade) se reflète
                 dans mon code : rigueur, persévérance et amélioration continue.
                 J'aime créer des solutions qui allient performance et
@@ -175,7 +190,9 @@
       <!-- ===== COMPÉTENCES ===== -->
       <section id="competences" class="skills">
         <div class="container">
-          <h2 class="section-title reveal">Mes Compétences</h2>
+          <h2 class="section-title reveal" data-i18n="skills.title">
+            Mes Compétences
+          </h2>
           <div class="skills-grid">
             <div class="skill-card reveal">
               <div class="skill-icon"><i class="fas fa-palette"></i></div>
@@ -229,7 +246,7 @@
             </div>
             <div class="skill-card reveal">
               <div class="skill-icon"><i class="fas fa-layer-group"></i></div>
-              <h3>Frameworks & Librairies</h3>
+              <h3 data-i18n="skills.frameworks">Frameworks & Librairies</h3>
               <div class="skill-logos">
                 <img
                   src="assets/logo_skills/React.png"
@@ -255,7 +272,7 @@
             </div>
             <div class="skill-card reveal">
               <div class="skill-icon"><i class="fas fa-database"></i></div>
-              <h3>Bases de Données</h3>
+              <h3 data-i18n="skills.databases">Bases de Données</h3>
               <div class="skill-logos">
                 <img src="assets/logo_skills/SQL.png" alt="SQL" title="SQL" />
                 <img
@@ -267,7 +284,7 @@
             </div>
             <div class="skill-card reveal">
               <div class="skill-icon"><i class="fas fa-tools"></i></div>
-              <h3>Outils & DevOps</h3>
+              <h3 data-i18n="skills.tools">Outils & DevOps</h3>
               <div class="skill-logos">
                 <img
                   src="assets/logo_skills/GitHub.png"
@@ -288,13 +305,22 @@
             </div>
             <div class="skill-card reveal">
               <div class="skill-icon"><i class="fas fa-users"></i></div>
-              <h3>Soft Skills</h3>
+              <h3 data-i18n="skills.soft">Soft Skills</h3>
               <ul class="soft-skills-list">
-                <li><i class="fas fa-check-circle"></i> Travail d'équipe</li>
                 <li>
-                  <i class="fas fa-check-circle"></i> Résolution de problèmes
+                  <i class="fas fa-check-circle"></i>
+                  <span data-i18n="skills.soft.teamwork">Travail d'équipe</span>
                 </li>
-                <li><i class="fas fa-check-circle"></i> Autonomie</li>
+                <li>
+                  <i class="fas fa-check-circle"></i>
+                  <span data-i18n="skills.soft.problem"
+                    >Résolution de problèmes</span
+                  >
+                </li>
+                <li>
+                  <i class="fas fa-check-circle"></i>
+                  <span data-i18n="skills.soft.autonomy">Autonomie</span>
+                </li>
               </ul>
             </div>
           </div>
@@ -304,16 +330,22 @@
       <!-- ===== PROJETS ===== -->
       <section id="projets" class="projects">
         <div class="container">
-          <h2 class="section-title reveal">Mes Projets</h2>
+          <h2 class="section-title reveal" data-i18n="projects.title">
+            Mes Projets
+          </h2>
           <div class="projects-grid">
             <article class="project-card reveal">
               <div class="project-header">
                 <i class="fas fa-folder-open project-icon"></i>
-                <span class="project-context">Personnel</span>
+                <span class="project-context" data-i18n="projects.personal"
+                  >Personnel</span
+                >
               </div>
               <div class="project-info">
-                <h3>Portfolio Personnel</h3>
-                <p>
+                <h3 data-i18n="projects.portfolio.title">
+                  Portfolio Personnel
+                </h3>
+                <p data-i18n="projects.portfolio.desc">
                   Création de ce site vitrine pour présenter mon profil et mes
                   compétences.
                 </p>
@@ -333,11 +365,13 @@
             <article class="project-card reveal">
               <div class="project-header">
                 <i class="fas fa-folder-open project-icon"></i>
-                <span class="project-context">Scolaire</span>
+                <span class="project-context" data-i18n="projects.school"
+                  >Scolaire</span
+                >
               </div>
               <div class="project-info">
                 <h3>Site Web SacreeTech</h3>
-                <p>
+                <p data-i18n="projects.sacreetech.desc">
                   Application web pour une association qui organise des
                   événements sportifs et culturels.
                 </p>
@@ -361,13 +395,13 @@
             <article class="project-card reveal">
               <div class="project-header">
                 <i class="fas fa-folder-open project-icon"></i>
-                <span class="project-context badge-wip"
+                <span class="project-context badge-wip" data-i18n="projects.wip"
                   >Personnel : En cours</span
                 >
               </div>
               <div class="project-info">
                 <h3>Stratego</h3>
-                <p>
+                <p data-i18n="projects.stratego.desc">
                   Reproduction du jeu de stratégie au tour par tour. Affrontez
                   l'adversaire en capturant son drapeau tout en protégeant le
                   vôtre, avec un système de pièces aux rangs.
@@ -394,16 +428,20 @@
       <!-- ===== PARCOURS ===== -->
       <section id="parcours" class="timeline-section">
         <div class="container">
-          <h2 class="section-title reveal">Mon Parcours</h2>
+          <h2 class="section-title reveal" data-i18n="journey.title">
+            Mon Parcours
+          </h2>
           <div class="timeline">
             <div class="timeline-item reveal">
               <div class="timeline-dot">
                 <i class="fas fa-graduation-cap"></i>
               </div>
-              <div class="timeline-date">2024 — Présent</div>
+              <div class="timeline-date" data-i18n="journey.but.date">
+                2024 — Présent
+              </div>
               <div class="timeline-content">
-                <h3>BUT Informatique</h3>
-                <p>
+                <h3 data-i18n="journey.but.title">BUT Informatique</h3>
+                <p data-i18n="journey.but.desc">
                   Apprentissage des fondamentaux du développement, bases de
                   données, algorithmique et gestion de projets.
                 </p>
@@ -413,8 +451,8 @@
               <div class="timeline-dot"><i class="fas fa-school"></i></div>
               <div class="timeline-date">2022</div>
               <div class="timeline-content">
-                <h3>Baccalauréat</h3>
-                <p>
+                <h3 data-i18n="journey.bac.title">Baccalauréat</h3>
+                <p data-i18n="journey.bac.desc">
                   Spécialités Mathématiques et NSI (Numérique et Sciences
                   Informatiques).
                 </p>
@@ -427,8 +465,10 @@
       <!-- ===== CONTACT ===== -->
       <section id="contact" class="contact">
         <div class="container">
-          <h2 class="section-title reveal">Me Contacter</h2>
-          <p class="contact-intro reveal">
+          <h2 class="section-title reveal" data-i18n="contact.title">
+            Me Contacter
+          </h2>
+          <p class="contact-intro reveal" data-i18n="contact.intro">
             Un projet ? Une question ? N'hésitez pas à m'écrire.
           </p>
           <div class="contact-methods reveal">
@@ -444,17 +484,24 @@
           <form class="contact-form reveal">
             <div class="form-row">
               <div class="form-group">
-                <label for="name"><i class="fas fa-user"></i> Nom</label>
+                <label for="name"
+                  ><i class="fas fa-user"></i>
+                  <span data-i18n="contact.form.name">Nom</span></label
+                >
                 <input
                   type="text"
                   id="name"
                   name="name"
+                  data-i18n-placeholder="contact.form.namePh"
                   placeholder="Votre nom"
                   required
                 />
               </div>
               <div class="form-group">
-                <label for="email"><i class="fas fa-at"></i> Email</label>
+                <label for="email"
+                  ><i class="fas fa-at"></i>
+                  <span data-i18n="contact.form.email">Email</span></label
+                >
                 <input
                   type="email"
                   id="email"
@@ -466,18 +513,21 @@
             </div>
             <div class="form-group">
               <label for="message"
-                ><i class="fas fa-comment-dots"></i> Message</label
+                ><i class="fas fa-comment-dots"></i>
+                <span data-i18n="contact.form.message">Message</span></label
               >
               <textarea
                 id="message"
                 name="message"
                 rows="5"
+                data-i18n-placeholder="contact.form.messagePh"
                 placeholder="Votre message..."
                 required
               ></textarea>
             </div>
             <button type="submit" class="btn-primary btn-submit">
-              <i class="fas fa-paper-plane"></i> Envoyer
+              <i class="fas fa-paper-plane"></i>
+              <span data-i18n="contact.form.send">Envoyer</span>
             </button>
           </form>
         </div>
