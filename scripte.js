@@ -5,6 +5,7 @@ const navSlide = () => {
   const burger = document.querySelector(".burger");
   const nav = document.querySelector(".nav-links");
   const navLinks = document.querySelectorAll(".nav-links li a");
+  const tabletBreakpoint = 1160;
 
   // Create overlay
   const overlay = document.createElement("div");
@@ -35,6 +36,20 @@ const navSlide = () => {
 
   // Close menu when clicking the overlay
   overlay.addEventListener("click", closeMenu);
+
+  // Close menu with Escape key for better accessibility
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && nav.classList.contains("nav-active")) {
+      closeMenu();
+    }
+  });
+
+  // Reset mobile/tablet menu state when returning to desktop
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > tabletBreakpoint) {
+      closeMenu();
+    }
+  });
 
   // Close menu when clicking a link (mobile)
   navLinks.forEach((link) => {
@@ -179,6 +194,66 @@ const scrollToTop = () => {
 };
 
 // ============================================
+// COMPETENCY CARDS — Hover desktop / tap mobile-tablet
+// ============================================
+const competencyCardsInteraction = () => {
+  const cards = document.querySelectorAll(".portfolio-card");
+  if (!cards.length) return;
+
+  const closeAllCards = () => {
+    cards.forEach((card) => {
+      card.classList.remove("is-open");
+      card.setAttribute("aria-expanded", "false");
+    });
+  };
+
+  cards.forEach((card, index) => {
+    if (!card.querySelector(".portfolio-details")) {
+      const detailsPanel = document.createElement("div");
+      detailsPanel.classList.add("portfolio-details");
+
+      const detailRows = card.querySelectorAll(":scope > p");
+      detailRows.forEach((row) => detailsPanel.appendChild(row));
+      card.appendChild(detailsPanel);
+    }
+
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("role", "button");
+    card.setAttribute("aria-expanded", "false");
+    card.setAttribute(
+      "aria-label",
+      `Afficher les details de la competence ${index + 1}`,
+    );
+
+    card.addEventListener("click", () => {
+      const isOpen = card.classList.contains("is-open");
+
+      closeAllCards();
+
+      if (!isOpen) {
+        card.classList.add("is-open");
+        card.setAttribute("aria-expanded", "true");
+      } else {
+        card.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    card.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        card.click();
+      }
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest(".portfolio-card")) {
+      closeAllCards();
+    }
+  });
+};
+
+// ============================================
 // FORM — Envoi via EmailJS
 // 1. Créez un compte sur https://www.emailjs.com/
 // 2. Ajoutez un service Gmail lié à ethanserville@gmail.com
@@ -239,11 +314,10 @@ const translations = {
   fr: {
     "nav.home": "Accueil",
     "nav.about": "À propos",
-    "nav.skills": "Compétences",
+    "nav.skills": "Stack technique & Compétences",
     "nav.projects": "Projets",
     "nav.journey": "Parcours",
     "nav.contact": "Contact",
-    "hero.greeting": "Je suis",
     "hero.subtitle": "Étudiant en Informatique",
     "hero.cta.contact": "Me Contacter",
     "hero.cta.projects": "Voir mes projets",
@@ -253,7 +327,7 @@ const translations = {
       "Passionné par les possibilités que le développement nous offre, je cherche toujours à apprendre de nouvelles compétences, que ce soit en résolvant des problèmes ou tout simplement en trouvant des solutions qui permettent de simplifier et rendre plus agréable la vie du quotidien et l'expérience des utilisateurs.",
     "about.p2":
       "Ma discipline dans le sport (Calisthenics, Escalade) se reflète dans mon code : rigueur, persévérance et amélioration continue. J'aime créer des solutions qui allient performance et esthétique.",
-    "skills.title": "Mes Compétences",
+    "skills.title": "Stack technique & Compétences",
     "skills.frameworks": "Frameworks & Librairies",
     "skills.databases": "Bases de Données",
     "skills.tools": "Outils & DevOps",
@@ -261,6 +335,92 @@ const translations = {
     "skills.soft.teamwork": "Travail d'équipe",
     "skills.soft.problem": "Résolution de problèmes",
     "skills.soft.autonomy": "Autonomie",
+    "portfolio.title": "Compétences",
+    "portfolio.label.context": "Contexte :",
+    "portfolio.label.tech": "Techno :",
+    "portfolio.label.tools": "Outils :",
+    "portfolio.label.learned": "Ce que j'ai appris :",
+    "portfolio.label.validated": "Compétence validée :",
+    "portfolio.card1.title": "Développement d'application (Symfony & PHP)",
+    "portfolio.card1.context":
+      "Création d'un site web pour une association qui gère des événements.",
+    "portfolio.card1.tech": "PHP, Symfony, HTML, CSS.",
+    "portfolio.card1.learned":
+      "Concevoir des applications complètes en partant des exigences clients jusqu'à la mise en production.",
+    "portfolio.card1.validated":
+      "Maintenir en conditions opérationnelles un site web et faire évoluer une application grâce à une structure de code propre avec Symfony.",
+    "portfolio.card2.title": "Algorithme et optimisation (Python)",
+    "portfolio.card2.context":
+      "Algorithmes de recherche et de construction de labyrinthes.",
+    "portfolio.card2.tech": "Python.",
+    "portfolio.card2.learned":
+      "Comparer des algorithmes pour trouver le plus efficace en prenant en compte l'impact sur les ressources (CPU, mémoire).",
+    "portfolio.card2.validated":
+      "Anticiper les résultats de diverses métriques, produire un code exigeant et l'optimiser.",
+    "portfolio.card3.title": "Administration système (VM, OpenNebula)",
+    "portfolio.card3.context":
+      "Création de machines virtuelles et configuration.",
+    "portfolio.card3.learned":
+      "Configurer un poste de travail complet, gérer des réseaux virtuels et sécuriser des services.",
+    "portfolio.card3.validated":
+      "Installer et configurer un système d'exploitation et des outils de développement.",
+    "portfolio.card4.title": "Soft skills et gestion (recueil de besoin)",
+    "portfolio.card4.context":
+      "Exercices de récupération des besoins client et simulation de création d'entreprise.",
+    "portfolio.card4.learned":
+      "Identifier les acteurs, les phases de vie d'un projet et formaliser les attentes.",
+    "portfolio.card4.validated":
+      "Appréhender les besoins du client et de l'utilisateur, concevoir un business plan et modéliser la gestion des stocks.",
+    "portfolio.card5.title":
+      "Gestion de versions et travail collaboratif (Git)",
+    "portfolio.card5.context":
+      "Gestion du code source lors du projet de site web pour l'association.",
+    "portfolio.card5.tech": "Git, GitHub.",
+    "portfolio.card5.learned":
+      "Travailler sur des branches séparées, fusionner des modifications et résoudre des conflits sans perdre de données.",
+    "portfolio.card5.validated":
+      "Sécuriser le cycle de développement et garantir l'historique des modifications d'un projet.",
+    "portfolio.card6.title":
+      "Conception et manipulation de bases de données (SQL)",
+    "portfolio.card6.context":
+      "Architecture des données pour le système de gestion d'événements et de membres.",
+    "portfolio.card6.tech":
+      "MySQL / MariaDB (utilisé avec Doctrine sur Symfony).",
+    "portfolio.card6.learned":
+      "Modéliser des données complexes (MCD/MLD), optimiser les requêtes et assurer l'intégrité référentielle des informations.",
+    "portfolio.card6.validated":
+      "Concevoir une base de données relationnelle performante et adaptée aux besoins métier.",
+    "portfolio.card7.title": "Gestion de projet et méthodes agiles",
+    "portfolio.card7.context":
+      "Organisation du travail en équipe pour des simulations de création d'entreprise.",
+    "portfolio.card7.tools": "Méthode Scrum.",
+    "portfolio.card7.learned":
+      "Découper un projet en tâches, prioriser les fonctionnalités et respecter des délais stricts.",
+    "portfolio.card7.validated":
+      "Piloter un projet informatique avec une méthodologie structurée pour garantir la livraison.",
+    "portfolio.card8.title": "Programmation orientée objet (C++)",
+    "portfolio.card8.context": "Développement d'un jeu de plateau (Stratego).",
+    "portfolio.card8.tech": "C++.",
+    "portfolio.card8.learned":
+      "Appliquer les principes de la POO (encapsulation, héritage, polymorphisme).",
+    "portfolio.card8.validated":
+      "Concevoir une architecture logicielle complexe et modulaire.",
+    "portfolio.card9.title": "Services réseaux et infrastructure",
+    "portfolio.card9.context":
+      "Mise en place d'un réseau local et configuration de services serveurs.",
+    "portfolio.card9.tech": "Protocoles TCP/IP, DNS, DHCP, adressage IP.",
+    "portfolio.card9.learned":
+      "Comprendre comment les données circulent entre les machines, configurer des routeurs et assurer la connectivité d'un parc informatique.",
+    "portfolio.card9.validated":
+      "Déployer et dépanner des infrastructures réseaux de base pour garantir l'interconnexion des systèmes.",
+    "portfolio.card10.title": "Qualité de code et tests",
+    "portfolio.card10.context":
+      "Automatisation du contrôle qualité sur un projet de groupe.",
+    "portfolio.card10.tech": "PHPUnit (Symfony).",
+    "portfolio.card10.learned":
+      "Écrire des tests unitaires et d'intégration pour prévenir les régressions et garantir que chaque fonctionnalité répond au cahier des charges.",
+    "portfolio.card10.validated":
+      "Assurer la fiabilité d'un livrable informatique par une démarche de test rigoureuse.",
     "projects.title": "Mes Projets",
     "projects.personal": "Personnel",
     "projects.school": "Scolaire",
@@ -273,6 +433,8 @@ const translations = {
       "Application web pour une association qui organise des événements sportifs et culturels.",
     "projects.stratego.desc":
       "Reproduction du jeu de stratégie au tour par tour. Affrontez l'adversaire en capturant son drapeau tout en protégeant le vôtre, avec un système de pièces aux rangs.",
+    "projects.airhh.desc":
+      "Développement d'un site web pour une agence de communication.",
     "projects.worldmenu.desc":
       "Site proposant des idées de menus et des recettes pour partir à la découverte de la culture culinaire du monde entier.",
     "projects.pacman.desc":
@@ -297,7 +459,7 @@ const translations = {
   en: {
     "nav.home": "Home",
     "nav.about": "About",
-    "nav.skills": "Skills",
+    "nav.skills": "Tech Stack & Skills",
     "nav.projects": "Projects",
     "nav.journey": "Journey",
     "nav.contact": "Contact",
@@ -311,7 +473,7 @@ const translations = {
       "Passionate about the possibilities that development offers, I always strive to learn new skills, whether by solving problems or simply finding solutions that simplify everyday life and improve user experience.",
     "about.p2":
       "My discipline in sport (Calisthenics, Climbing) is reflected in my code: rigor, perseverance and continuous improvement. I love creating solutions that combine performance and aesthetics.",
-    "skills.title": "My Skills",
+    "skills.title": "Tech Stack & Skills",
     "skills.frameworks": "Frameworks & Libraries",
     "skills.databases": "Databases",
     "skills.tools": "Tools & DevOps",
@@ -319,6 +481,89 @@ const translations = {
     "skills.soft.teamwork": "Teamwork",
     "skills.soft.problem": "Problem solving",
     "skills.soft.autonomy": "Autonomy",
+    "portfolio.title": "Skills",
+    "portfolio.label.context": "Context:",
+    "portfolio.label.tech": "Technologies:",
+    "portfolio.label.tools": "Tools:",
+    "portfolio.label.learned": "What I learned:",
+    "portfolio.label.validated": "Validated skill:",
+    "portfolio.card1.title": "Application Development (Symfony & PHP)",
+    "portfolio.card1.context":
+      "Creation of a website for an association that manages events.",
+    "portfolio.card1.tech": "PHP, Symfony, HTML, CSS.",
+    "portfolio.card1.learned":
+      "Designing complete applications from client requirements to production deployment.",
+    "portfolio.card1.validated":
+      "Maintaining a website in operational condition and evolving an application with a clean Symfony code structure.",
+    "portfolio.card2.title": "Algorithms and Optimization (Python)",
+    "portfolio.card2.context":
+      "Search algorithms and maze generation algorithms.",
+    "portfolio.card2.tech": "Python.",
+    "portfolio.card2.learned":
+      "Comparing algorithms to find the most efficient one while considering resource usage (CPU, memory).",
+    "portfolio.card2.validated":
+      "Anticipating metric outcomes, producing demanding code and optimizing it.",
+    "portfolio.card3.title": "System Administration (VM, OpenNebula)",
+    "portfolio.card3.context":
+      "Creation and configuration of virtual machines.",
+    "portfolio.card3.learned":
+      "Configuring a complete workstation, managing virtual networks and securing services.",
+    "portfolio.card3.validated":
+      "Installing and configuring an operating system and development tools.",
+    "portfolio.card4.title":
+      "Soft Skills and Management (Requirements Gathering)",
+    "portfolio.card4.context":
+      "Client requirement collection exercises and company creation simulations.",
+    "portfolio.card4.learned":
+      "Identifying stakeholders, project life-cycle phases and formalizing expectations.",
+    "portfolio.card4.validated":
+      "Understanding client and user needs, designing a business plan and modeling stock management.",
+    "portfolio.card5.title": "Version Control and Collaborative Work (Git)",
+    "portfolio.card5.context":
+      "Source code management during the association website project.",
+    "portfolio.card5.tech": "Git, GitHub.",
+    "portfolio.card5.learned":
+      "Working on separate branches, merging changes and resolving conflicts without data loss.",
+    "portfolio.card5.validated":
+      "Securing the development lifecycle and ensuring a reliable project change history.",
+    "portfolio.card6.title": "Database Design and Manipulation (SQL)",
+    "portfolio.card6.context":
+      "Data architecture for the event and member management system.",
+    "portfolio.card6.tech": "MySQL / MariaDB (used with Doctrine on Symfony).",
+    "portfolio.card6.learned":
+      "Modeling complex data (MCD/MLD), optimizing queries and ensuring referential integrity.",
+    "portfolio.card6.validated":
+      "Designing a high-performance relational database adapted to business needs.",
+    "portfolio.card7.title": "Project Management and Agile Methods",
+    "portfolio.card7.context":
+      "Team work organization for company creation simulations.",
+    "portfolio.card7.tools": "Scrum methodology.",
+    "portfolio.card7.learned":
+      "Breaking down a project into tasks, prioritizing features and meeting strict deadlines.",
+    "portfolio.card7.validated":
+      "Leading an IT project with a structured methodology to ensure delivery.",
+    "portfolio.card8.title": "Object-Oriented Programming (C++)",
+    "portfolio.card8.context": "Development of a board game (Stratego).",
+    "portfolio.card8.tech": "C++.",
+    "portfolio.card8.learned":
+      "Applying OOP principles (encapsulation, inheritance, polymorphism).",
+    "portfolio.card8.validated":
+      "Designing a complex and modular software architecture.",
+    "portfolio.card9.title": "Network Services and Infrastructure",
+    "portfolio.card9.context":
+      "Setting up a local network and configuring server services.",
+    "portfolio.card9.tech": "TCP/IP, DNS, DHCP protocols, IP addressing.",
+    "portfolio.card9.learned":
+      "Understanding how data flows between machines, configuring routers and ensuring network connectivity.",
+    "portfolio.card9.validated":
+      "Deploying and troubleshooting basic network infrastructures to ensure system interconnection.",
+    "portfolio.card10.title": "Code Quality and Testing",
+    "portfolio.card10.context": "Automated quality control on a group project.",
+    "portfolio.card10.tech": "PHPUnit (Symfony).",
+    "portfolio.card10.learned":
+      "Writing unit and integration tests to prevent regressions and ensure each feature meets specifications.",
+    "portfolio.card10.validated":
+      "Ensuring software deliverable reliability through a rigorous testing approach.",
     "projects.title": "My Projects",
     "projects.personal": "Personal",
     "projects.school": "Academic",
@@ -331,6 +576,8 @@ const translations = {
       "Web application for an association that organises sports and cultural events.",
     "projects.stratego.desc":
       "Reproduction of the turn-based strategy game. Challenge your opponent by capturing their flag while protecting yours, with a ranked pieces system.",
+    "projects.airhh.desc":
+      "Development of a website for a communication agency.",
     "projects.worldmenu.desc":
       "Website offering menu ideas and recipes to explore culinary cultures from around the world.",
     "projects.pacman.desc":
@@ -355,8 +602,8 @@ const translations = {
 };
 
 const typingWords = {
-  fr: ["Ethan Serville", "Développeur", "Passionné"],
-  en: ["Ethan Serville", "Developer", "Passionate"],
+  fr: ["Développeur", "Passionné"],
+  en: ["Passionate", "Developer"],
 };
 
 let currentLang = localStorage.getItem("lang") || "fr";
@@ -422,4 +669,5 @@ document.addEventListener("DOMContentLoaded", () => {
   scrollToTop();
   contactForm();
   langToggle();
+  competencyCardsInteraction();
 });
