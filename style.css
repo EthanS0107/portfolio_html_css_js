@@ -344,10 +344,11 @@ nav {
   cursor: pointer;
   z-index: 1001;
   padding: 5px;
+  position: relative;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  gap: 0;
 }
 
 /* Lang Toggle Button */
@@ -381,20 +382,37 @@ nav {
   transition: all var(--transition-base);
   border-radius: 2px;
   transform-origin: center;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.burger .line1 {
+  top: 35%;
+}
+
+.burger .line2 {
+  top: 50%;
+}
+
+.burger .line3 {
+  top: 65%;
 }
 
 /* Burger animation */
 .toggle .line1 {
-  transform: translateY(8px) rotate(45deg);
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
 }
 
 .toggle .line2 {
   opacity: 0;
-  transform: scaleX(0.5);
+  transform: translate(-50%, -50%) scaleX(0);
 }
 
 .toggle .line3 {
-  transform: translateY(-8px) rotate(-45deg);
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
 }
 
 .nav-lang-item {
@@ -1611,14 +1629,6 @@ footer p {
     width: 20px;
     height: 2.8px;
   }
-
-  .toggle .line1 {
-    transform: translateY(6.8px) rotate(45deg);
-  }
-
-  .toggle .line3 {
-    transform: translateY(-6.8px) rotate(-45deg);
-  }
 }
 
 @media screen and (max-width: 1160px) and (min-width: 801px) and (orientation: landscape) {
@@ -1708,9 +1718,9 @@ footer p {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 0;
-    padding: 2rem 0;
+    padding: 6.2rem 0 2rem;
     transform: translateX(100%);
     transition: transform 0.45s cubic-bezier(0.77, 0.2, 0.05, 1);
     box-shadow: -8px 0 50px rgba(0, 0, 0, 0.5);
@@ -1842,6 +1852,12 @@ footer p {
 
   .nav-lang-item {
     display: block;
+    order: -1;
+    margin-bottom: 0.35rem;
+  }
+
+  .lang-toggle-menu {
+    margin-top: 0;
   }
 
   .hero h1 {
