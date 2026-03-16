@@ -344,6 +344,13 @@ nav {
   cursor: pointer;
   z-index: 1001;
   padding: 5px;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid rgba(224, 224, 226, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   position: relative;
   flex-direction: column;
   justify-content: center;
