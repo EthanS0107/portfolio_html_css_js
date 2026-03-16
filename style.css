@@ -802,6 +802,43 @@ section {
   margin-top: 3rem;
 }
 
+@media screen and (min-width: 1161px) {
+  .about {
+    padding-bottom: 9rem;
+  }
+
+  .skills {
+    padding-top: 9rem;
+    padding-bottom: 10rem;
+  }
+
+  .projects {
+    padding-top: 8.5rem;
+  }
+
+  .competency-portfolio {
+    margin-top: 8rem;
+  }
+
+  .timeline-section {
+    padding-top: 9.5rem;
+    padding-bottom: 10rem;
+  }
+
+  .contact {
+    padding-top: 8.5rem;
+  }
+
+  #a-propos,
+  #tech-stack,
+  #competences,
+  #projets,
+  #parcours,
+  #contact {
+    scroll-margin-top: 110px;
+  }
+}
+
 .portfolio-title {
   text-align: center;
   font-size: clamp(1.35rem, 2.8vw, 1.9rem);

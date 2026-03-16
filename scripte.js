@@ -81,29 +81,66 @@ const headerScroll = () => {
 // ACTIVE NAV LINK — Highlight on scroll
 // ============================================
 const activeNavOnScroll = () => {
-  const sections = document.querySelectorAll("section[id]");
-  const navLinks = document.querySelectorAll(".nav-links li a");
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute("id");
-          navLinks.forEach((link) => {
-            link.classList.remove("active-link");
-            if (link.getAttribute("href") === `#${id}`) {
-              link.classList.add("active-link");
-            }
-          });
-        }
-      });
-    },
-    {
-      rootMargin: "-30% 0px -70% 0px",
-    },
+  const navLinks = Array.from(
+    document.querySelectorAll('.nav-links li a[href^="#"]'),
   );
+  const sections = navLinks
+    .map((link) => {
+      const id = link.getAttribute("href")?.slice(1);
+      if (!id) return null;
+      const element = document.getElementById(id);
+      return element ? { id, element } : null;
+    })
+    .filter(Boolean);
 
-  sections.forEach((section) => observer.observe(section));
+  if (!sections.length || !navLinks.length) return;
+
+  const setActiveLink = (id) => {
+    navLinks.forEach((link) => {
+      link.classList.toggle(
+        "active-link",
+        link.getAttribute("href") === `#${id}`,
+      );
+    });
+  };
+
+  const updateActiveLinkOnScroll = () => {
+    const header = document.getElementById("main-header");
+    const headerHeight = header ? header.offsetHeight : 70;
+    const activationLine =
+      window.scrollY +
+      headerHeight +
+      (window.innerHeight - headerHeight) * 0.38;
+    const pageBottom = window.scrollY + window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    let currentSectionId = sections[0].id;
+
+    for (let i = 0; i < sections.length; i++) {
+      const currentTop = sections[i].element.offsetTop;
+      const nextTop =
+        i < sections.length - 1
+          ? sections[i + 1].element.offsetTop
+          : Number.POSITIVE_INFINITY;
+
+      if (activationLine >= currentTop && activationLine < nextTop) {
+        currentSectionId = sections[i].id;
+        break;
+      }
+    }
+
+    // Keep the last nav item active near the end of the page.
+    if (documentHeight - pageBottom <= 4) {
+      currentSectionId = sections[sections.length - 1].id;
+    }
+
+    setActiveLink(currentSectionId);
+  };
+
+  updateActiveLinkOnScroll();
+  window.addEventListener("scroll", updateActiveLinkOnScroll, {
+    passive: true,
+  });
+  window.addEventListener("resize", updateActiveLinkOnScroll);
 };
 
 // ============================================
@@ -433,7 +470,8 @@ const translations = {
   fr: {
     "nav.home": "Accueil",
     "nav.about": "À propos",
-    "nav.skills": "Stack technique & Compétences",
+    "nav.stack": "Stack technique",
+    "nav.skills": "Compétences",
     "nav.projects": "Projets",
     "nav.journey": "Parcours",
     "nav.contact": "Contact",
@@ -446,7 +484,8 @@ const translations = {
       "Passionné par les possibilités que le développement nous offre, je cherche toujours à apprendre de nouvelles compétences, que ce soit en résolvant des problèmes ou tout simplement en trouvant des solutions qui permettent de simplifier et rendre plus agréable la vie du quotidien et l'expérience des utilisateurs.",
     "about.p2":
       "Ma discipline dans le sport (Calisthenics, Escalade) se reflète dans mon code : rigueur, persévérance et amélioration continue. J'aime créer des solutions qui allient performance et esthétique.",
-    "skills.title": "Stack technique & Compétences",
+    "skills.title": "Compétences",
+    "stack.title": "Stack technique",
     "skills.frameworks": "Frameworks & Librairies",
     "skills.databases": "Bases de Données",
     "skills.tools": "Outils & DevOps",
@@ -594,7 +633,8 @@ const translations = {
   en: {
     "nav.home": "Home",
     "nav.about": "About",
-    "nav.skills": "Tech Stack & Skills",
+    "nav.stack": "Tech Stack",
+    "nav.skills": "Skills",
     "nav.projects": "Projects",
     "nav.journey": "Journey",
     "nav.contact": "Contact",
@@ -608,7 +648,8 @@ const translations = {
       "Passionate about the possibilities that development offers, I always strive to learn new skills, whether by solving problems or simply finding solutions that simplify everyday life and improve user experience.",
     "about.p2":
       "My discipline in sport (Calisthenics, Climbing) is reflected in my code: rigor, perseverance and continuous improvement. I love creating solutions that combine performance and aesthetics.",
-    "skills.title": "Tech Stack & Skills",
+    "skills.title": "Skills",
+    "stack.title": "Tech Stack",
     "skills.frameworks": "Frameworks & Libraries",
     "skills.databases": "Databases",
     "skills.tools": "Tools & DevOps",
