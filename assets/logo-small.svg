@@ -1,20 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96" role="img" aria-labelledby="favTitle favDesc">
-  <title id="favTitle">Ethan Serville Favicon</title>
-  <desc id="favDesc">Favicon monogramme ES stylise</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96" role="img" aria-labelledby="logoSmallTitle logoSmallDesc">
+  <title id="logoSmallTitle">Ethan Serville Monogram</title>
+  <desc id="logoSmallDesc">Logo compact avec monogramme ES stylise</desc>
   <defs>
-    <linearGradient id="esFavBg" x1="8%" y1="8%" x2="92%" y2="92%">
+    <linearGradient id="esSmallBg" x1="8%" y1="8%" x2="92%" y2="92%">
       <stop offset="0%" stop-color="#d98a72" />
       <stop offset="100%" stop-color="#8f454b" />
     </linearGradient>
-    <radialGradient id="esFavGlow" cx="72%" cy="22%" r="72%">
+    <radialGradient id="esSmallGlow" cx="72%" cy="22%" r="72%">
       <stop offset="0%" stop-color="#ffffff" stop-opacity="0.48" />
       <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
     </radialGradient>
   </defs>
 
-  <rect x="6" y="6" width="84" height="84" rx="23" fill="url(#esFavBg)" />
+  <rect x="6" y="6" width="84" height="84" rx="23" fill="url(#esSmallBg)" />
   <rect x="6" y="6" width="84" height="84" rx="23" fill="none" stroke="#f4ebd0" stroke-opacity="0.42" stroke-width="1.5" />
-  <rect x="6" y="6" width="84" height="84" rx="23" fill="url(#esFavGlow)" />
+  <rect x="6" y="6" width="84" height="84" rx="23" fill="url(#esSmallGlow)" />
 
   <g fill="none" stroke="#f8f9fa" stroke-linecap="round" stroke-linejoin="round">
     <path d="M34 30H61" stroke-width="7" />
