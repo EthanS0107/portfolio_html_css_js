@@ -254,6 +254,125 @@ const competencyCardsInteraction = () => {
 };
 
 // ============================================
+// PROJECT CAROUSELS — Navigate project visuals
+// ============================================
+const initProjectCarousels = () => {
+  const carousels = document.querySelectorAll("[data-carousel]");
+  if (!carousels.length) return;
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  carousels.forEach((carousel) => {
+    const track = carousel.querySelector("[data-carousel-track]");
+    const slides = Array.from(carousel.querySelectorAll(".project-slide"));
+    const prevButton = carousel.querySelector("[data-carousel-prev]");
+    const nextButton = carousel.querySelector("[data-carousel-next]");
+    const dotsContainer = carousel.querySelector(".project-carousel-dots");
+
+    if (!track || !slides.length || !prevButton || !nextButton) return;
+
+    if (dotsContainer) {
+      dotsContainer.innerHTML = "";
+    }
+
+    const dots = slides.map((_, slideIndex) => {
+      if (!dotsContainer) return null;
+
+      const dot = document.createElement("button");
+      dot.className = "project-carousel-dot";
+      dot.type = "button";
+      dot.setAttribute("aria-label", `Voir l'image ${slideIndex + 1}`);
+      dot.setAttribute("data-carousel-dot", `${slideIndex}`);
+      dotsContainer.appendChild(dot);
+      return dot;
+    });
+
+    if (slides.length === 1) {
+      prevButton.hidden = true;
+      nextButton.hidden = true;
+      if (dotsContainer) {
+        dotsContainer.hidden = true;
+      }
+      track.style.transform = "translateX(0%)";
+      slides[0].classList.add("is-active");
+      return;
+    }
+
+    prevButton.hidden = false;
+    nextButton.hidden = false;
+    if (dotsContainer) {
+      dotsContainer.hidden = false;
+    }
+
+    let currentIndex = 0;
+    let autoplayId = null;
+
+    const updateCarousel = (index) => {
+      currentIndex = (index + slides.length) % slides.length;
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+      slides.forEach((slide, slideIndex) => {
+        slide.classList.toggle("is-active", slideIndex === currentIndex);
+      });
+
+      dots.forEach((dot, dotIndex) => {
+        if (!dot) return;
+        const isActive = dotIndex === currentIndex;
+        dot.classList.toggle("is-active", isActive);
+        dot.setAttribute("aria-current", isActive ? "true" : "false");
+      });
+    };
+
+    const stopAutoplay = () => {
+      if (autoplayId) {
+        window.clearInterval(autoplayId);
+        autoplayId = null;
+      }
+    };
+
+    const startAutoplay = () => {
+      if (prefersReducedMotion) return;
+      stopAutoplay();
+      autoplayId = window.setInterval(() => {
+        updateCarousel(currentIndex + 1);
+      }, 5000);
+    };
+
+    prevButton.addEventListener("click", () => {
+      updateCarousel(currentIndex - 1);
+      startAutoplay();
+    });
+
+    nextButton.addEventListener("click", () => {
+      updateCarousel(currentIndex + 1);
+      startAutoplay();
+    });
+
+    dots.forEach((dot, dotIndex) => {
+      if (!dot) return;
+      dot.addEventListener("click", () => {
+        updateCarousel(dotIndex);
+        startAutoplay();
+      });
+    });
+
+    carousel.addEventListener("mouseenter", stopAutoplay);
+    carousel.addEventListener("mouseleave", startAutoplay);
+    carousel.addEventListener("focusin", stopAutoplay);
+    carousel.addEventListener("focusout", (event) => {
+      if (!carousel.contains(event.relatedTarget)) {
+        startAutoplay();
+      }
+    });
+
+    updateCarousel(0);
+    startAutoplay();
+  });
+};
+
+// ============================================
 // FORM — Envoi via EmailJS
 // 1. Créez un compte sur https://www.emailjs.com/
 // 2. Ajoutez un service Gmail lié à ethanserville@gmail.com
@@ -822,4 +941,5 @@ document.addEventListener("DOMContentLoaded", () => {
   contactForm();
   langToggle();
   competencyCardsInteraction();
+  initProjectCarousels();
 });

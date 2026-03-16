@@ -995,6 +995,203 @@ html[lang="en"] .portfolio-card::after {
   height: 100%; /* S'assure de prendre la hauteur de la grille */
 }
 
+.project-carousel {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(255, 255, 255, 0.8),
+      transparent 42%
+    ),
+    linear-gradient(145deg, rgba(184, 216, 216, 0.7), rgba(193, 102, 107, 0.22));
+  border-bottom: 1px solid rgba(44, 62, 80, 0.08);
+}
+
+.project-carousel::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 40%;
+  background: linear-gradient(180deg, transparent, rgba(22, 48, 43, 0.1));
+  pointer-events: none;
+}
+
+.project-carousel-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.project-slide {
+  min-width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.project-slide-placeholder {
+  display: flex;
+  align-items: stretch;
+}
+
+.project-placeholder {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.9rem;
+  width: 100%;
+  height: 100%;
+  padding: 1.8rem;
+  color: var(--White);
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(255, 255, 255, 0.18),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(184, 216, 216, 0.28),
+      transparent 34%
+    ),
+    linear-gradient(
+      135deg,
+      var(--Ardoise-Profonde),
+      #22384b 52%,
+      var(--Terracotta-Brulee, #c1666b)
+    );
+}
+
+.project-placeholder::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  pointer-events: none;
+}
+
+.project-placeholder i {
+  font-size: 2rem;
+  color: #f4ebd0;
+}
+
+.project-placeholder strong {
+  font-family: var(--font-heading);
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+  line-height: 1.2;
+  letter-spacing: 0.2px;
+}
+
+.project-placeholder p {
+  max-width: 28ch;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.project-placeholder-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.project-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-carousel-controls {
+  position: absolute;
+  inset: 50% 0 auto;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.9rem;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.project-carousel-btn {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--Ardoise-Profonde);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+  transition:
+    transform var(--transition-base),
+    background var(--transition-base),
+    color var(--transition-base);
+  pointer-events: auto;
+}
+
+.project-carousel-btn:hover,
+.project-carousel-btn:focus-visible {
+  transform: scale(1.08);
+  background: var(--Terracotta-Brûlée);
+  color: var(--White);
+  outline: none;
+}
+
+.project-carousel-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(22, 48, 43, 0.22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 2;
+}
+
+.project-carousel-dot {
+  width: 10px;
+  height: 10px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition:
+    width var(--transition-base),
+    background var(--transition-base),
+    transform var(--transition-base);
+}
+
+.project-carousel-dot.is-active {
+  width: 28px;
+  background: var(--White);
+}
+
+.project-carousel-dot:hover,
+.project-carousel-dot:focus-visible {
+  background: var(--White);
+  transform: scale(1.05);
+  outline: none;
+}
+
 .project-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 16px 48px var(--Shadow-Medium);
@@ -1127,17 +1324,6 @@ html[lang="en"] .portfolio-card::after {
   align-items: center;
   gap: 6px;
   transition: all var(--transition-base);
-}
-
-/* Rend toute la carte cliquable via le lien */
-.project-link::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
 }
 
 .project-link:hover {
@@ -1717,7 +1903,8 @@ footer p {
     width: 78%;
     max-width: 320px;
     background: linear-gradient(
-      160deg,
+      .project-carousel {aspect-ratio: 16 / 11;} .project-carousel-btn
+        {width: 38px; height: 38px;} 160deg,
       #1e2d3d 0%,
       var(--Ardoise-Profonde) 55%,
       #1a1f2c 100%
@@ -1954,6 +2141,19 @@ footer p {
 
   nav {
     padding: 0 4%;
+  }
+
+  .project-carousel-controls {
+    padding: 0 0.65rem;
+  }
+
+  .project-carousel-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .project-carousel-dots {
+    bottom: 0.7rem;
   }
 }
 
