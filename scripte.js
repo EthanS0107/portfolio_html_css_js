@@ -211,6 +211,93 @@ const typingEffect = () => {
 };
 
 // ============================================
+// HERO INTERACTION — Subtle cursor reactive background
+// ============================================
+const initHeroPointerReactiveBackground = () => {
+  const hero = document.querySelector(".hero");
+  if (!hero) return;
+  const particlesLayer = hero.querySelector(".hero-particles");
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  );
+  const supportsFinePointer = window.matchMedia("(pointer: fine)");
+
+  if (particlesLayer && !particlesLayer.children.length) {
+    const particleCount = window.innerWidth < 768 ? 16 : 28;
+
+    for (let index = 0; index < particleCount; index += 1) {
+      const particle = document.createElement("span");
+      particle.classList.add("hero-particle");
+
+      const size = (Math.random() * 4.6 + 1.8).toFixed(2);
+      const x = (Math.random() * 100).toFixed(2);
+      const y = (Math.random() * 100).toFixed(2);
+      const factor = (Math.random() * 0.18 + 0.06).toFixed(3);
+      const alpha = (Math.random() * 0.5 + 0.28).toFixed(2);
+      const duration = (Math.random() * 5 + 4).toFixed(2);
+      const delay = (Math.random() * -8).toFixed(2);
+
+      particle.style.setProperty("--particle-size", `${size}px`);
+      particle.style.setProperty("--particle-x", `${x}%`);
+      particle.style.setProperty("--particle-y", `${y}%`);
+      particle.style.setProperty("--particle-factor", factor);
+      particle.style.setProperty("--particle-alpha", alpha);
+      particle.style.setProperty("--particle-duration", `${duration}s`);
+      particle.style.setProperty("--particle-delay", `${delay}s`);
+
+      particlesLayer.appendChild(particle);
+    }
+  }
+
+  if (prefersReducedMotion.matches || !supportsFinePointer.matches) {
+    return;
+  }
+
+  let rafId = null;
+  let targetX = 0;
+  let targetY = 0;
+  let targetRx = 0;
+  let targetRy = 0;
+
+  const applyMotion = () => {
+    hero.style.setProperty("--hero-pointer-x", `${targetX.toFixed(2)}px`);
+    hero.style.setProperty("--hero-pointer-y", `${targetY.toFixed(2)}px`);
+    hero.style.setProperty("--hero-pointer-rx", `${targetRx.toFixed(2)}deg`);
+    hero.style.setProperty("--hero-pointer-ry", `${targetRy.toFixed(2)}deg`);
+    rafId = null;
+  };
+
+  const scheduleMotion = () => {
+    if (rafId) return;
+    rafId = window.requestAnimationFrame(applyMotion);
+  };
+
+  hero.addEventListener("pointermove", (event) => {
+    const rect = hero.getBoundingClientRect();
+    const relativeX = (event.clientX - rect.left) / rect.width;
+    const relativeY = (event.clientY - rect.top) / rect.height;
+
+    const centeredX = (relativeX - 0.5) * 2;
+    const centeredY = (relativeY - 0.5) * 2;
+
+    targetX = centeredX * 30;
+    targetY = centeredY * 22;
+    targetRx = centeredY * 2.3;
+    targetRy = centeredX * -2.3;
+    scheduleMotion();
+  });
+
+  hero.addEventListener("pointerleave", () => {
+    targetX = 0;
+    targetY = 0;
+    targetRx = 0;
+    targetRy = 0;
+    scheduleMotion();
+  });
+};
+
+// ============================================
 // SCROLL TO TOP — Button
 // ============================================
 const scrollToTop = () => {
@@ -1330,6 +1417,7 @@ document.addEventListener("DOMContentLoaded", () => {
   navSlide();
   headerScroll();
   activeNavOnScroll();
+  initHeroPointerReactiveBackground();
   renderProjectsSection();
   initShowMoreForSection({
     gridSelector: ".portfolio-grid",
