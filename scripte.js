@@ -414,9 +414,24 @@ const initProjectCarousels = () => {
 // ============================================
 // PROJECTS DATA — Single source of truth
 // ============================================
-const projectsData = Array.isArray(window.portfolioProjectsData)
-  ? window.portfolioProjectsData
+const projectsConfig = window.portfolioProjectsConfig || {};
+const projectUi = projectsConfig.ui || {};
+const projectsData = Array.isArray(projectsConfig.projects)
+  ? projectsConfig.projects
   : [];
+
+const getLocalizedValue = (value, lang = currentLang) => {
+  if (value && typeof value === "object" && !Array.isArray(value)) {
+    return value[lang] || value.fr || value.en || "";
+  }
+
+  return typeof value === "string" ? value : "";
+};
+
+const getProjectUiLabel = (key, fallback = "") => {
+  const localizedUi = projectUi[currentLang] || projectUi.fr || {};
+  return localizedUi[key] || fallback;
+};
 
 const renderProjectsSection = () => {
   const projectsGrid = document.querySelector(".projects-grid");
@@ -428,7 +443,12 @@ const renderProjectsSection = () => {
         .map(
           (image, index) => `
             <figure class="project-slide${index === 0 ? " is-active" : ""}">
-              <img src="${image.src}" alt="${image.alt}" loading="lazy" />
+              <img
+                src="${image.src}"
+                alt=""
+                loading="lazy"
+                data-project-image-alt='${JSON.stringify(image.alt || {})}'
+              />
             </figure>
           `,
         )
@@ -437,26 +457,27 @@ const renderProjectsSection = () => {
 
     return `
       <figure class="project-slide project-slide-placeholder is-active">
-        <div class="project-placeholder" data-i18n-aria-label="projects.placeholder.aria">
-          <span class="project-placeholder-badge" data-i18n="projects.placeholder.badge"></span>
+        <div class="project-placeholder">
+          <span class="project-placeholder-badge"></span>
           <i class="fas fa-images" aria-hidden="true"></i>
-          <strong data-i18n="projects.placeholder.message"></strong>
+          <strong></strong>
         </div>
       </figure>
     `;
   };
 
   projectsGrid.innerHTML = projectsData
-    .map((project) => {
+    .map((project, projectIndex) => {
       const contextClass = project.contextClassName
         ? ` ${project.contextClassName}`
         : "";
-      const relAttrs = project.linkTargetBlank ? ' rel="noopener"' : "";
-      const targetAttr = project.linkTargetBlank ? ' target="_blank"' : "";
+      const link = project.link || {};
+      const relAttrs = link.targetBlank ? ' rel="noopener"' : "";
+      const targetAttr = link.targetBlank ? ' target="_blank"' : "";
       const tags = project.tags.map((tag) => `<span>${tag}</span>`).join("");
 
       return `
-        <article class="project-card reveal">
+        <article class="project-card reveal" data-project-index="${projectIndex}">
           <div class="project-carousel" data-carousel>
             <div class="project-carousel-track" data-carousel-track>
               ${renderSlides(project)}
@@ -466,7 +487,6 @@ const renderProjectsSection = () => {
                 class="project-carousel-btn"
                 type="button"
                 data-carousel-prev
-                data-i18n-aria-label="projects.carousel.prev"
               >
                 <i class="fas fa-chevron-left" aria-hidden="true"></i>
               </button>
@@ -474,41 +494,131 @@ const renderProjectsSection = () => {
                 class="project-carousel-btn"
                 type="button"
                 data-carousel-next
-                data-i18n-aria-label="projects.carousel.next"
               >
                 <i class="fas fa-chevron-right" aria-hidden="true"></i>
               </button>
             </div>
-            <div
-              class="project-carousel-dots"
-              role="tablist"
-              data-i18n-aria-label="projects.carousel.gallery"
-            ></div>
+            <div class="project-carousel-dots" role="tablist"></div>
           </div>
           <div class="project-header">
             <i class="fas fa-folder-open project-icon"></i>
-            <span class="project-context${contextClass}" data-i18n="${project.contextKey}"></span>
+            <span class="project-context${contextClass}"></span>
           </div>
           <div class="project-info">
-            <h3 data-i18n="${project.titleKey}"></h3>
-            <p data-i18n="${project.descKey}"></p>
+            <h3></h3>
+            <p></p>
             <div class="tags">${tags}</div>
           </div>
           <div class="project-footer">
-            <a href="${project.linkHref}" class="project-link"${targetAttr}${relAttrs}>
+            <a href="${link.href || "#"}" class="project-link"${targetAttr}${relAttrs}>
               <i class="fab fa-github"></i>
-              <span data-i18n="${project.linkTextKey}"></span>
+              <span></span>
             </a>
           </div>
         </article>
       `;
     })
     .join("");
+
+  updateProjectsLanguageContent();
+};
+
+const updateProjectsLanguageContent = () => {
+  const cards = document.querySelectorAll(".project-card[data-project-index]");
+
+  cards.forEach((card) => {
+    const index = Number.parseInt(card.getAttribute("data-project-index"), 10);
+    const project = projectsData[index];
+    if (!project) return;
+
+    const contextEl = card.querySelector(".project-context");
+    const titleEl = card.querySelector(".project-info h3");
+    const descEl = card.querySelector(".project-info p");
+    const linkTextEl = card.querySelector(".project-link span");
+    const linkEl = card.querySelector(".project-link");
+    const placeholder = card.querySelector(".project-placeholder");
+    const placeholderBadge = card.querySelector(".project-placeholder-badge");
+    const placeholderMessage = card.querySelector(
+      ".project-placeholder strong",
+    );
+    const prevBtn = card.querySelector("[data-carousel-prev]");
+    const nextBtn = card.querySelector("[data-carousel-next]");
+    const galleryDots = card.querySelector(".project-carousel-dots");
+
+    if (contextEl) contextEl.textContent = getLocalizedValue(project.context);
+    if (titleEl) titleEl.textContent = getLocalizedValue(project.title);
+    if (descEl) descEl.textContent = getLocalizedValue(project.description);
+    if (linkTextEl) {
+      const link = project.link || {};
+      linkTextEl.textContent = getLocalizedValue(link.label);
+    }
+
+    if (prevBtn) {
+      prevBtn.setAttribute(
+        "aria-label",
+        getProjectUiLabel("carouselPrev", "Image précédente"),
+      );
+    }
+
+    if (nextBtn) {
+      nextBtn.setAttribute(
+        "aria-label",
+        getProjectUiLabel("carouselNext", "Image suivante"),
+      );
+    }
+
+    if (galleryDots) {
+      galleryDots.setAttribute(
+        "aria-label",
+        getProjectUiLabel("carouselGallery", "Galerie du projet"),
+      );
+    }
+
+    if (placeholder) {
+      placeholder.setAttribute(
+        "aria-label",
+        getProjectUiLabel("placeholderAria", "Images du projet à venir"),
+      );
+    }
+
+    if (placeholderBadge) {
+      placeholderBadge.textContent = getProjectUiLabel(
+        "placeholderBadge",
+        "Bientôt",
+      );
+    }
+
+    if (placeholderMessage) {
+      placeholderMessage.textContent = getProjectUiLabel(
+        "placeholderMessage",
+        "Des images arrivent bientôt",
+      );
+    }
+
+    if (linkEl && project.link?.targetBlank) {
+      linkEl.setAttribute("target", "_blank");
+      linkEl.setAttribute("rel", "noopener");
+    }
+
+    card.querySelectorAll("img[data-project-image-alt]").forEach((imgEl) => {
+      const rawAlt = imgEl.getAttribute("data-project-image-alt");
+      let localizedAlt = "";
+
+      if (rawAlt) {
+        try {
+          localizedAlt = getLocalizedValue(JSON.parse(rawAlt));
+        } catch {
+          localizedAlt = "";
+        }
+      }
+
+      imgEl.setAttribute("alt", localizedAlt);
+    });
+  });
 };
 
 const updateProjectCarouselLabels = () => {
-  const dotLabelPrefix =
-    translations[currentLang]?.["projects.carousel.dot"] || "Voir l'image";
+  const dotLabelPrefix = getProjectUiLabel("carouselDot", "Voir l'image");
 
   document.querySelectorAll(".project-carousel-dot").forEach((dot, index) => {
     const dotIndex = Number.parseInt(dot.getAttribute("data-carousel-dot"), 10);
@@ -690,37 +800,6 @@ const translations = {
     "portfolio.card10.validated":
       "Assurer la fiabilité d'un livrable informatique par une démarche de test rigoureuse.",
     "projects.title": "Mes Projets",
-    "projects.personal": "Personnel",
-    "projects.pro": "Professionnel",
-    "projects.school": "Scolaire",
-    "projects.wip": "Personnel : En cours",
-    "projects.wip.pro": "Professionnel : En cours",
-    "projects.portfolio.title": "Portfolio Personnel",
-    "projects.portfolio.desc":
-      "Création de ce site vitrine pour présenter mon profil et mes compétences.",
-    "projects.viewCode": "Voir le code",
-    "projects.viewSite": "Voir le site",
-    "projects.sacreetech.title": "Site Web SacreeTech",
-    "projects.sacreetech.desc":
-      "Application web pour une association qui organise des événements sportifs et culturels.",
-    "projects.stratego.title": "Stratego",
-    "projects.stratego.desc":
-      "Reproduction du jeu de stratégie au tour par tour. Affrontez l'adversaire en capturant son drapeau tout en protégeant le vôtre, avec un système de pièces aux rangs.",
-    "projects.airhh.title": "AIRHH",
-    "projects.airhh.desc":
-      "Développement d'un site web pour une agence de communication.",
-    "projects.afleuro.title": "A Fleur d'Ô",
-    "projects.afleuro.desc":
-      "Développement d'un site web pour un fleuriste local, mettant en avant leurs produits et services.",
-    "projects.valois.title": "Valois Nettoyage",
-    "projects.valois.desc":
-      "Développement d'un site web pour une entreprise de nettoyage, présentant leurs services et permettant aux clients de les contacter facilement.",
-    "projects.worldmenu.title": "World Menu",
-    "projects.worldmenu.desc":
-      "Site proposant des idées de menus et des recettes pour partir à la découverte de la culture culinaire du monde entier.",
-    "projects.pacman.title": "Pac-Man",
-    "projects.pacman.desc":
-      "Reproduction du jeu d'arcade Pac-Man avec gestion des fantômes, des niveaux et du score.",
     "projects.placeholder.badge": "Bientôt",
     "projects.placeholder.message": "Des images arrivent bientôt",
     "projects.placeholder.aria": "Images du projet à venir",
@@ -746,9 +825,6 @@ const translations = {
     "contact.form.message": "Message",
     "contact.form.messagePh": "Votre message...",
     "contact.form.send": "Envoyer",
-    "projects.myboostlocal.title": "MyBoostLocal",
-    "projects.myboostlocal.desc":
-      "Site pour présenter les services de MyBoostLocal, mon agence de marketing digital spécialisée dans l'accompagnement des petites entreprises locales.",
   },
   en: {
     "nav.home": "Home",
@@ -863,37 +939,6 @@ const translations = {
     "portfolio.card10.validated":
       "Ensuring software deliverable reliability through a rigorous testing approach.",
     "projects.title": "My Projects",
-    "projects.personal": "Personal",
-    "projects.school": "Academic",
-    "projects.pro": "Professional",
-    "projects.wip": "Personal: In progress",
-    "projects.wip.pro": "Professional: In progress",
-    "projects.portfolio.title": "Personal Portfolio",
-    "projects.portfolio.desc":
-      "Creation of this showcase website to present my profile and skills.",
-    "projects.viewCode": "View code",
-    "projects.viewSite": "View site",
-    "projects.sacreetech.title": "SacreeTech Website",
-    "projects.sacreetech.desc":
-      "Web application for an association that organises sports and cultural events.",
-    "projects.stratego.title": "Stratego",
-    "projects.stratego.desc":
-      "Reproduction of the turn-based strategy game. Challenge your opponent by capturing their flag while protecting yours, with a ranked pieces system.",
-    "projects.airhh.title": "AIRHH",
-    "projects.airhh.desc":
-      "Development of a website for a communication agency.",
-    "projects.afleuro.title": "A Fleur d'O",
-    "projects.afleuro.desc":
-      "Development of a website for a local florist, showcasing products and services.",
-    "projects.valois.title": "Valois Cleaning",
-    "projects.valois.desc":
-      "Development of a website for a cleaning company, presenting its services and helping clients get in touch easily.",
-    "projects.worldmenu.title": "World Menu",
-    "projects.worldmenu.desc":
-      "Website offering menu ideas and recipes to explore culinary cultures from around the world.",
-    "projects.pacman.title": "Pac-Man",
-    "projects.pacman.desc":
-      "Reproduction of the classic Pac-Man arcade game with ghost management, levels and score system.",
     "projects.placeholder.badge": "Soon",
     "projects.placeholder.message": "Images are coming soon",
     "projects.placeholder.aria": "Project images coming soon",
@@ -919,9 +964,6 @@ const translations = {
     "contact.form.message": "Message",
     "contact.form.messagePh": "Your message...",
     "contact.form.send": "Send",
-    "projects.myboostlocal.title": "MyBoostLocal",
-    "projects.myboostlocal.desc":
-      "Website to showcase the services of MyBoostLocal, my digital marketing agency specializing in supporting small local businesses.",
   },
 };
 
@@ -1071,6 +1113,7 @@ const langToggle = () => {
     currentLang = currentLang === "fr" ? "en" : "fr";
     localStorage.setItem("lang", currentLang);
     applyTranslations(currentLang);
+    updateProjectsLanguageContent();
     updateProjectCarouselLabels();
     updateButtons();
     updateShowMoreButtonsLanguage();
