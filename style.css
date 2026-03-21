@@ -2746,6 +2746,12 @@ footer p {
     transition-delay: 0.48s;
   }
 
+    .nav-links.nav-active li:nth-child(8) {
+      opacity: 1;
+      transform: translateX(0);
+      transition-delay: 0.54s;
+    }
+
   .nav-links li a {
     font-size: 1rem;
     font-weight: 700;
